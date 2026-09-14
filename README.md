@@ -1,193 +1,131 @@
-# CO₂ Injection Temperature Analysis in Geological Formations (Smeaheia Reservoir)
+# Smeaheia Pressure–Temperature Reference Analysis
 
-## Introduction
-This project aims to analyze **CO₂ Injection Temperature** and **Pressure** in the **Smeaheia reservoir**, examining how these parameters vary with **depth** and how they influence the **effectiveness of CO₂ storage**. Understanding the thermal behavior of the reservoir is crucial for optimizing the CO₂ injection process and assessing the long-term sustainability of CO₂ storage. This project focuses on temperature gradients, pressure trends, and their relationship with depth.**
----**
+This project performs a **small descriptive analysis of four pressure/temperature reference points** adapted from the open **Smeaheia Dataset** on CO2DataShare.
 
-### Data License
-- The datasets used in this project are made available under **[Smeaheia Dataset License](https://co2datashare.org/smeaheia-dataset/static/SMEAHEIA%20DATASET%20LICENSE_Gassnova%20and%20Equinor.pdf)** by **Equinor** and **Gassnova**. You can use the data for research and non-commercial purposes while providing appropriate credit.
+The purpose is to practise transparent handling and visualisation of subsurface reference data. It is **not** a predictive model, storage-capacity calculation, injection simulator, or reservoir-pressure model.
 
-### Dataset Access
+## What changed from the earlier version
 
-The dataset used in this project has been extracted and converted into an Excel file from the original Smeaheia dataset. The data includes **CO₂ Injection Temperature**, **Pressure**, and **Depth** readings, which were used for the analysis in the **Smeaheia Reservoir**.
+The earlier repository used a four-point train/test linear-regression exercise and made statements such as “pressure decreases with depth.” Those claims were not defensible:
 
-#### How to Access the Dataset:
-- The dataset is available in this repository under the **`data/`** folder. You can download it directly by navigating to the folder.
-- **Dataset File**: `Smeaheia temperature and pressure.xlsx`
---- 
+- four points are too few for a meaningful train/test predictive model;
+- the pressure values are **non-monotonic** across the four rows (126, 105, 110 and 130 bar);
+- the rows carry different pressure-state labels (`Initial`, `Before Injection`, `Maximum`), so they should not be treated as one hydrostatic or reservoir-pressure gradient;
+- a simple depth × temperature interaction term does not represent CO₂ storage efficiency.
 
-### Installation
+The corrected repository therefore keeps the useful part: **data provenance, cleaning, tabulation and descriptive visualisation**.
 
-If you need to run the project on your local machine, ensure you have the following Python libraries installed:
+---
+
+## Data source and licence
+
+**Source dataset:** Smeaheia Dataset, CO2DataShare  
+**Dataset DOI:** `10.11582/2021.00012`  
+**Contributors / rights holders:** Equinor and Gassnova  
+**Dataset licence:** SMEAHEIA DATASET LICENSE  
+**Dataset page:** https://co2datashare.org/dataset/smeaheia-dataset  
+**Pressure/temperature resource:** https://co2datashare.org/dataset/smeaheia-dataset/resource/7481b930-0eb5-4819-9f81-5dbfbba6a722  
+**Licence page:** https://co2datashare.org/view/license/26af9426-203f-4993-9d41-2e1bf191ceaf
+
+CO2DataShare describes this resource as containing reservoir temperature gradients, CO₂ injection temperatures at wellhead/reservoir depth, and reservoir-pressure evolution information used in the Smeaheia studies.
+
+The small Excel file in this repository is an **adapted/extracted table** from that material. The data remain subject to the **SMEAHEIA DATASET LICENSE**. The repository's Apache-2.0 `LICENSE` applies to the analysis code/documentation only and does not replace the dataset licence.
+
+Credit: **Equinor and Gassnova, Smeaheia Dataset, CO2DataShare.**
+
+---
+
+## Adapted reference table
+
+| Depth (m) | Reservoir temperature (°C) | CO₂ injection temperature (°C) | Pressure (bar) | Pressure type |
+|---:|---:|---:|---:|---|
+| 82 | 6.0 | 6 | 126 | Initial |
+| 1020 | 37.0 | 6 | 105 | Before Injection |
+| 1200 | 51.5 | 10 | 110 | Before Injection |
+| 1500 | 62.6 | 20 | 130 | Maximum |
+
+Because these four rows represent different reference conditions/states, the plots are **descriptive only**.
+
+---
+
+## Repository structure
+
+```text
+.
+├── README.md
+├── Smeaheia_Pressure_Temperature_Reference_Analysis.ipynb
+├── requirements.txt
+├── .gitignore
+├── LICENSE
+├── data/
+│   └── smeaheia_pressure_temperature_reference.xlsx
+└── images/
+    ├── reservoir_temperature_vs_depth.png
+    ├── co2_injection_temperature_vs_depth.png
+    └── pressure_reference_vs_depth.png
+```
+
+---
+
+## Descriptive results
+
+### Reservoir temperature vs depth
+
+![Reservoir temperature vs depth](images/reservoir_temperature_vs_depth.png)
+
+The four reference values show higher reservoir temperature at greater listed depth. With only four adapted points, this is shown as a descriptive relationship; no calibrated geothermal-gradient model is fitted.
+
+### CO₂ injection temperature vs depth
+
+![CO2 injection temperature vs depth](images/co2_injection_temperature_vs_depth.png)
+
+The listed injection-temperature reference values are 6, 6, 10 and 20 °C. These are retained as source reference values; the repository does not infer injection design requirements or phase behaviour from them.
+
+### Pressure vs depth
+
+![Pressure reference values vs depth](images/pressure_reference_vs_depth.png)
+
+The pressure values are **not monotonic with depth**: 126, 105, 110 and 130 bar. The associated labels also differ (`Initial`, `Before Injection`, `Maximum`). The plot must therefore not be interpreted as a single pressure gradient.
+
+---
+
+## What this project demonstrates
+
+- Reading and cleaning a small adapted subsurface dataset
+- Preserving source-state labels during analysis
+- Separating **descriptive observations** from unsupported predictive or causal claims
+- Producing transparent depth-based visualisations in Python
+
+---
+
+## Limitations
+
+- Only four adapted reference rows
+- Mixed pressure states/conditions
+- No reservoir simulation
+- No pressure-transient analysis
+- No calibrated geothermal-gradient model
+- No CO₂ phase-behaviour calculation
+- No storage-capacity or storage-efficiency calculation
+- No machine-learning or predictive claim
+
+---
+
+## How to run
 
 ```bash
-pip install pandas matplotlib seaborn scikit-learn
+pip install -r requirements.txt
+```
+
+Open and run:
+
+```text
+Smeaheia_Pressure_Temperature_Reference_Analysis.ipynb
 ```
 
 ---
 
-## Data Loading and Preprocessing
+## Author
 
-In this project, we start by loading the **temperature/pressure data**. The dataset provides the **CO₂ injection temperature** and **pressure** at different depths within the reservoir. The following preprocessing steps were taken:
-- Loaded and cleaned the dataset.
-- Checked for missing values and handled them appropriately.
-- Selected relevant columns for analysis.
-- The dataset was sorted by depth for consistent data representation.
-
-```python
-# Load temperature and pressure data 
-Smeaheia_Norway_Temp_Pressure_data = pd.read_excel('data/Smeaheia pressure and temperature .xlsx')
-
-# Display the first few rows to check if the columns are selected properly
-Smeaheia_Norway_Temp_Pressure_data.head()
-
-# Get a statistical summary of the dataset
-summary_stats = Smeaheia_Norway_Temp_Pressure_data.describe()
-
-# Display the summary
-print(summary_stats)
-```
-
----
-
-## Exploratory Data Analysis (EDA)
-
-In this section, we explore the relationships between **CO₂ Injection Temperature** and **depth**, as well as **Pressure** and **depth**. Various visualizations are used to uncover patterns and insights, such as temperature gradients and how they change with depth.
-
-### Visualize CO₂ Injection Temperature vs Depth using a line plot
-
-```python
-# Visualize CO₂ Injection Temperature vs Depth using a line plot
-plt.figure(figsize=(10, 6))
-sns.lineplot(x=Smeaheia_Norway_Temp_Pressure_data['Depth (m)'], 
-             y=Smeaheia_Norway_Temp_Pressure_data['CO₂ Injection T  (°C)'], 
-             marker="o", color='b')
-plt.title('CO₂ Injection Temperature vs Depth')
-plt.xlabel('Depth (m)')
-plt.ylabel('CO₂ Injection Temperature (°C)')
-plt.grid(True)
-plt.show()
-```
-
-![CO₂ Injection Temperature vs Depth](images/temp_vs_depth.png)
-
-### Visualize Pressure vs Depth using a line plot
-
-```python
-# Visualize Pressure vs Depth using a line plot
-plt.figure(figsize=(10, 6))
-sns.lineplot(x=Smeaheia_Norway_Temp_Pressure_data['Depth (m)'], 
-             y=Smeaheia_Norway_Temp_Pressure_data['Pressure (bar)\t'], 
-             marker="o", color='r')
-plt.title('Pressure vs Depth')
-plt.xlabel('Depth (m)')
-plt.ylabel('Pressure (bar)')
-plt.grid(True)
-plt.show()
-```
-![Pressure vs Depth](images/pressure_vs_depth.png)
-
-### Temperature Gradient Analysis
-
-```python
-# Calculate Temperature Gradient
-Smeaheia_Norway_Temp_Pressure_data['Temperature Gradient'] = Smeaheia_Norway_Temp_Pressure_data['CO₂ Injection T  (°C)'].diff() / Smeaheia_Norway_Temp_Pressure_data['Depth (m)'].diff()
-
-# Plot Temperature Gradient vs Depth
-plt.figure(figsize=(10, 6))
-sns.lineplot(x=Smeaheia_Norway_Temp_Pressure_data['Depth (m)'], 
-             y=Smeaheia_Norway_Temp_Pressure_data['Temperature Gradient'], 
-             marker="o", color='g')
-plt.title('Temperature Gradient vs Depth')
-plt.xlabel('Depth (m)')
-plt.ylabel('Temperature Gradient (°C/m)')
-plt.grid(True)
-plt.show()
-```
-
-![Temperature Gradient vs Depth](images/temp_gradient.png)
-
-### Scatter plot of CO₂ Injection Temperature vs Pressure
-
-```python
-# Scatter plot of CO₂ Injection Temperature vs Pressure
-plt.figure(figsize=(10, 6))
-sns.scatterplot(x=Smeaheia_Norway_Temp_Pressure_data['CO₂ Injection T  (°C)'], 
-                y=Smeaheia_Norway_Temp_Pressure_data['Pressure (bar)\t'], 
-                color='purple')
-plt.title('CO₂ Injection Temperature vs Pressure')
-plt.xlabel('CO₂ Injection Temperature (°C)')
-plt.ylabel('Pressure (bar)')
-plt.grid(True)
-plt.show()
-
-# Calculate Pearson Correlation Coefficient between Temperature and Pressure
-correlation = Smeaheia_Norway_Temp_Pressure_data['CO₂ Injection T  (°C)'].corr(Smeaheia_Norway_Temp_Pressure_data['Pressure (bar)\t']))
-
-# Display the correlation
-print(f"Pearson Correlation Coefficient between CO₂ Injection Temperature and Pressure: {correlation}")
-```
-
-![CO₂ Injection Temperature vs Pressure](images/temp_vs_pressure_scatter.png)
-
----
-
-## Insights from the Data
-
-From the EDA and temperature gradient analysis, we derive several key insights:
-
-- **CO₂ Injection Temperature** increases with **depth**, indicating a direct relationship between depth and temperature.
-- **Pressure** generally decreases with depth, which is important for understanding CO₂ injection behavior.
-- **Temperature Gradient Analysis** suggests varying temperature behavior in different parts of the reservoir, influencing the CO₂ injection process.
-- The **scatter plot** shows a moderate positive correlation between **CO₂ Injection Temperature** and **Pressure**, suggesting some interdependency.
-
----
-
-## Feature Engineering
-
-An interaction term between **Depth** and **CO₂ Injection Temperature** was created to capture the combined effect of depth and temperature on CO₂ storage efficiency. Additionally, the **Pressure-Temperature** relationship was considered for further analysis.
-
-```python
-# Feature Engineering: Create an interaction term between Depth and CO₂ Injection Temperature
-Smeaheia_Norway_Temp_Pressure_data['Depth-Temperature Interaction'] = Smeaheia_Norway_Temp_Pressure_data['Depth (m)'] * Smeaheia_Norway_Temp_Pressure_data['CO₂ Injection T  (°C)']
-```
-
----
-
-## Modeling and Prediction
-
-We applied a **Linear Regression** model to predict **CO₂ Injection Temperature** based on **depth**. The model's performance was evaluated using **Mean Squared Error (MSE)** and **R-squared (R²)** scores. Due to the limited dataset (only four data points), the model's predictive performance was limited.
-
-```python
-# Prepare the data for modeling
-X = Smeaheia_Norway_Temp_Pressure_data[['Depth (m)']]  # Predicting CO₂ Injection Temperature based on Depth
-y = Smeaheia_Norway_Temp_Pressure_data['CO₂ Injection T  (°C)']
-
-# Split the data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-# Initialize the Linear Regression model
-model = LinearRegression()
-
-# Train the model
-model.fit(X_train, y_train)
-
-# Predict using the model
-y_pred = model.predict(X_test)
-
-# Evaluate the model
-mse = mean_squared_error(y_test, y_pred)
-r2 = r2_score(y_test, y_pred)
-
-print(f"Mean Squared Error (MSE): {mse}")
-print(f"R-squared (R²): {r2}")
-```
-
----
-
-## Conclusion 
-
-The analysis of CO₂ Injection Temperature and Pressure in the Smeaheia reservoir reveals the following trends:
-- **CO₂ Injection Temperature** increases with depth, which is important for CO₂ phase behavior and storage efficiency.
-- **Pressure** decreases with depth, which is important for understanding the reservoir's behavior during CO₂ injection.
-- Given the limited data (only 4 data points), machine learning models like linear regression were not effective. The results mainly provide descriptive insights rather than predictive models.
+**Anuri Nwagbara**  
+*Geological Engineer*
