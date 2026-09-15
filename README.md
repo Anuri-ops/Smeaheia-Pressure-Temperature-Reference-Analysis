@@ -1,19 +1,19 @@
 # Smeaheia Pressure–Temperature Reference Analysis
 
-This project performs a **small descriptive analysis of four pressure/temperature reference points** adapted from the open **Smeaheia Dataset** on CO2DataShare.
+This project performs a small descriptive analysis of four pressure/temperature reference points adapted from the open Smeaheia Dataset on CO2DataShare.
 
-The purpose is to practise transparent handling and visualisation of subsurface reference data. It is **not** a predictive model, storage-capacity calculation, injection simulator, or reservoir-pressure model.
+The purpose is to practise transparent handling and visualisation of subsurface reference data. It is not a predictive model, storage-capacity calculation, injection simulator, or reservoir-pressure model.
 
 ## What changed from the earlier version
 
 The earlier repository used a four-point train/test linear-regression exercise and made statements such as “pressure decreases with depth.” Those claims were not defensible:
 
 - four points are too few for a meaningful train/test predictive model;
-- the pressure values are **non-monotonic** across the four rows (126, 105, 110 and 130 bar);
+- the pressure values are non-monotonic across the four rows (126, 105, 110 and 130 bar);
 - the rows carry different pressure-state labels (`Initial`, `Before Injection`, `Maximum`), so they should not be treated as one hydrostatic or reservoir-pressure gradient;
 - a simple depth × temperature interaction term does not represent CO₂ storage efficiency.
 
-The corrected repository therefore keeps the useful part: **data provenance, cleaning, tabulation and descriptive visualisation**.
+The corrected repository therefore keeps the useful part: data provenance, cleaning, tabulation and descriptive visualisation.
 
 ---
 
@@ -29,7 +29,7 @@ The corrected repository therefore keeps the useful part: **data provenance, cle
 
 CO2DataShare describes this resource as containing reservoir temperature gradients, CO₂ injection temperatures at wellhead/reservoir depth, and reservoir-pressure evolution information used in the Smeaheia studies.
 
-The small Excel file in this repository is an **adapted/extracted table** from that material. The data remain subject to the **SMEAHEIA DATASET LICENSE**. The repository's Apache-2.0 `LICENSE` applies to the analysis code/documentation only and does not replace the dataset licence.
+The small Excel file in this repository is an adapted/extracted table from that material. The data remain subject to the SMEAHEIA DATASET LICENSE. The repository's Apache-2.0 `LICENSE` applies to the analysis code/documentation only and does not replace the dataset licence.
 
 Credit: **Equinor and Gassnova, Smeaheia Dataset, CO2DataShare.**
 
@@ -44,7 +44,7 @@ Credit: **Equinor and Gassnova, Smeaheia Dataset, CO2DataShare.**
 | 1200 | 51.5 | 10 | 110 | Before Injection |
 | 1500 | 62.6 | 20 | 130 | Maximum |
 
-Because these four rows represent different reference conditions/states, the plots are **descriptive only**.
+Because these four rows represent different reference conditions/states, the plots are descriptive only.
 
 ---
 
@@ -85,7 +85,7 @@ The listed injection-temperature reference values are 6, 6, 10 and 20 °C. These
 
 ![Pressure reference values vs depth](images/pressure_reference_vs_depth.png)
 
-The pressure values are **not monotonic with depth**: 126, 105, 110 and 130 bar. The associated labels also differ (`Initial`, `Before Injection`, `Maximum`). The plot must therefore not be interpreted as a single pressure gradient.
+The pressure values are not monotonic with depth: 126, 105, 110 and 130 bar. The associated labels also differ (`Initial`, `Before Injection`, `Maximum`). The plot must therefore not be interpreted as a single pressure gradient.
 
 ---
 
@@ -93,7 +93,7 @@ The pressure values are **not monotonic with depth**: 126, 105, 110 and 130 bar.
 
 - Reading and cleaning a small adapted subsurface dataset
 - Preserving source-state labels during analysis
-- Separating **descriptive observations** from unsupported predictive or causal claims
+- Separating descriptive observations from unsupported predictive or causal claims
 - Producing transparent depth-based visualisations in Python
 
 ---
